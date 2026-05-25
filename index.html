@@ -2,8 +2,7 @@
 <html>
 
 <head>
-
-  <title>AI Chatbot</title>
+  <title>AI Hub</title>
 
   <style>
 
@@ -11,34 +10,34 @@
       background:#0f172a;
       color:white;
       font-family:Arial;
-      display:flex;
-      justify-content:center;
-      align-items:center;
-      height:100vh;
       margin:0;
-    }
-
-    .box{
-      width:400px;
-      background:#1e293b;
-      padding:20px;
-      border-radius:20px;
-    }
-
-    h1{
+      padding:40px;
       text-align:center;
     }
 
+    h1{
+      font-size:50px;
+    }
+
+    .box{
+      background:#1e293b;
+      width:400px;
+      margin:auto;
+      padding:20px;
+      border-radius:20px;
+      margin-top:30px;
+    }
+
     input{
-      width:100%;
+      width:90%;
       padding:15px;
       border:none;
       border-radius:10px;
-      margin-top:10px;
+      margin-top:15px;
     }
 
     button{
-      width:100%;
+      width:90%;
       padding:15px;
       border:none;
       border-radius:10px;
@@ -53,25 +52,25 @@
       background:#0f172a;
       padding:15px;
       border-radius:10px;
-      min-height:100px;
+      min-height:80px;
     }
 
   </style>
-
 </head>
 
 <body>
 
+  <h1>AI Hub 🚀</h1>
+
   <div class="box">
 
-    <h1>AI Chatbot 🤖</h1>
-
     <input
+      type="text"
       id="question"
       placeholder="Ask something..."
     >
 
-    <button onclick="askAI()">
+    <button onclick="reply()">
       Ask AI
     </button>
 
@@ -83,55 +82,43 @@
 
   <script>
 
-    async function askAI(){
+    function reply(){
 
-      let question =
+      let q =
       document.getElementById("question").value;
 
+      let response = "";
+
+      if(q.includes("cricket")){
+
+        response =
+        "🏏 Cricket AI: India is a strong cricket team.";
+
+      }
+
+      else if(q.includes("football")){
+
+        response =
+        "⚽ Football AI: Messi is one of the greatest players.";
+
+      }
+
+      else if(q.includes("weather")){
+
+        response =
+        "🌤 Weather AI: It looks sunny today.";
+
+      }
+
+      else{
+
+        response =
+        "🤖 AI: I am still learning.";
+
+      }
+
       document.getElementById("answer").innerHTML =
-      "Thinking...";
-
-      try{
-
-        let response = await fetch(
-          "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=AIzaSyACJy3mp1j-xvkg3U8PyERidvafreOWfmI",
-          {
-            method:"POST",
-
-            headers:{
-              "Content-Type":"application/json"
-            },
-
-            body:JSON.stringify({
-              contents:[
-                {
-                  parts:[
-                    {
-                      text:question
-                    }
-                  ]
-                }
-              ]
-            })
-          }
-        );
-
-        let data = await response.json();
-
-        let answer =
-        data.candidates[0].content.parts[0].text;
-
-        document.getElementById("answer").innerHTML =
-        answer;
-
-      }
-
-      catch(error){
-
-        document.getElementById("answer").innerHTML =
-        "Error connecting to AI";
-
-      }
+      response;
 
     }
 
