@@ -2,6 +2,7 @@
 <html>
 
 <head>
+
   <title>AI Hub</title>
 
   <style>
@@ -11,114 +12,227 @@
       color:white;
       font-family:Arial;
       margin:0;
-      padding:40px;
+    }
+
+    header{
       text-align:center;
+      padding:60px;
+      background:linear-gradient(135deg,#0f172a,#2563eb);
     }
 
-    h1{
-      font-size:50px;
+    header h1{
+      font-size:60px;
     }
 
-    .box{
+    header p{
+      font-size:22px;
+    }
+
+    .container{
+      display:flex;
+      flex-wrap:wrap;
+      justify-content:center;
+      gap:30px;
+      padding:40px;
+    }
+
+    .card{
       background:#1e293b;
-      width:400px;
-      margin:auto;
-      padding:20px;
+      width:300px;
+      padding:25px;
       border-radius:20px;
-      margin-top:30px;
+      transition:0.3s;
+    }
+
+    .card:hover{
+      transform:translateY(-10px);
+    }
+
+    h2{
+      color:cyan;
     }
 
     input{
       width:90%;
-      padding:15px;
+      padding:12px;
       border:none;
       border-radius:10px;
       margin-top:15px;
     }
 
     button{
-      width:90%;
-      padding:15px;
+      width:95%;
+      padding:12px;
       border:none;
       border-radius:10px;
-      margin-top:15px;
       background:cyan;
-      font-size:18px;
+      margin-top:15px;
       cursor:pointer;
+      font-size:16px;
+      font-weight:bold;
     }
 
-    #answer{
-      margin-top:20px;
+    .answer{
+      margin-top:15px;
       background:#0f172a;
       padding:15px;
       border-radius:10px;
-      min-height:80px;
+      min-height:70px;
     }
 
   </style>
+
 </head>
 
 <body>
 
-  <h1>AI Hub 🚀</h1>
+  <header>
 
-  <div class="box">
+    <h1>AI Hub 🚀</h1>
 
-    <input
-      type="text"
-      id="question"
-      placeholder="Ask something..."
-    >
+    <p>
+      Explore different AI assistants.
+    </p>
 
-    <button onclick="reply()">
-      Ask AI
-    </button>
+  </header>
 
-    <div id="answer">
-      AI response appears here...
+  <div class="container">
+
+    <!-- SPORTS AI -->
+
+    <div class="card">
+
+      <h2>🏏 Sports AI</h2>
+
+      <input
+        id="sports"
+        placeholder="Ask about sports"
+      >
+
+      <button onclick="sportsAI()">
+        Ask Sports AI
+      </button>
+
+      <div class="answer" id="sportsAnswer">
+      </div>
+
+    </div>
+
+    <!-- WEATHER AI -->
+
+    <div class="card">
+
+      <h2>🌤 Weather AI</h2>
+
+      <input
+        id="weather"
+        placeholder="Ask about weather"
+      >
+
+      <button onclick="weatherAI()">
+        Ask Weather AI
+      </button>
+
+      <div class="answer" id="weatherAnswer">
+      </div>
+
+    </div>
+
+    <!-- CODING AI -->
+
+    <div class="card">
+
+      <h2>💻 Coding AI</h2>
+
+      <input
+        id="coding"
+        placeholder="Ask coding questions"
+      >
+
+      <button onclick="codingAI()">
+        Ask Coding AI
+      </button>
+
+      <div class="answer" id="codingAnswer">
+      </div>
+
+    </div>
+
+    <!-- GAMING AI -->
+
+    <div class="card">
+
+      <h2>🎮 Gaming AI</h2>
+
+      <input
+        id="gaming"
+        placeholder="Ask gaming questions"
+      >
+
+      <button onclick="gamingAI()">
+        Ask Gaming AI
+      </button>
+
+      <div class="answer" id="gamingAnswer">
+      </div>
+
     </div>
 
   </div>
 
   <script>
 
-    function reply(){
+    function sportsAI(){
 
       let q =
-      document.getElementById("question").value;
+      document.getElementById("sports").value;
 
-      let response = "";
+      let answer = "";
 
       if(q.includes("cricket")){
 
-        response =
-        "🏏 Cricket AI: India is a strong cricket team.";
+        answer =
+        "🏏 Cricket AI: India is one of the best teams.";
 
       }
 
       else if(q.includes("football")){
 
-        response =
-        "⚽ Football AI: Messi is one of the greatest players.";
-
-      }
-
-      else if(q.includes("weather")){
-
-        response =
-        "🌤 Weather AI: It looks sunny today.";
+        answer =
+        "⚽ Football AI: Messi is legendary.";
 
       }
 
       else{
 
-        response =
-        "🤖 AI: I am still learning.";
+        answer =
+        "🏅 Sports AI is thinking...";
 
       }
 
-      document.getElementById("answer").innerHTML =
-      response;
+      document.getElementById("sportsAnswer").innerHTML =
+      answer;
+
+    }
+
+    function weatherAI(){
+
+      document.getElementById("weatherAnswer").innerHTML =
+      "🌤 Weather AI: Today looks sunny.";
+
+    }
+
+    function codingAI(){
+
+      document.getElementById("codingAnswer").innerHTML =
+      "💻 Coding AI: Learn HTML, CSS and JavaScript.";
+
+    }
+
+    function gamingAI(){
+
+      document.getElementById("gamingAnswer").innerHTML =
+      "🎮 Gaming AI: Minecraft and GTA are popular games.";
 
     }
 
