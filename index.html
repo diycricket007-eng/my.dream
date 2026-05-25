@@ -1,33 +1,70 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
+
+  <meta charset="UTF-8">
+  <meta name="viewport"
+  content="width=device-width, initial-scale=1.0">
 
   <title>AI Hub</title>
 
   <style>
 
+    *{
+      margin:0;
+      padding:0;
+      box-sizing:border-box;
+      font-family:Arial;
+    }
+
     body{
       background:#0f172a;
       color:white;
-      font-family:Arial;
-      display:flex;
-      justify-content:center;
-      align-items:center;
-      height:100vh;
-      margin:0;
     }
 
-    .box{
-      width:450px;
+    header{
+      text-align:center;
+      padding:70px 20px;
+      background:
+      linear-gradient(135deg,#0f172a,#2563eb);
+    }
+
+    header h1{
+      font-size:65px;
+      margin-bottom:20px;
+    }
+
+    header p{
+      font-size:22px;
+      color:#dbeafe;
+    }
+
+    .container{
+      display:grid;
+      grid-template-columns:
+      repeat(auto-fit,minmax(300px,1fr));
+
+      gap:30px;
+      padding:50px;
+    }
+
+    .card{
       background:#1e293b;
       padding:25px;
       border-radius:20px;
-      text-align:center;
+      transition:0.3s;
+      box-shadow:0 0 15px rgba(0,0,0,0.3);
     }
 
-    h1{
-      margin-bottom:20px;
+    .card:hover{
+      transform:translateY(-10px);
+      box-shadow:0 0 25px cyan;
+    }
+
+    .card h2{
+      margin-bottom:15px;
+      color:cyan;
     }
 
     input{
@@ -46,18 +83,29 @@
       border-radius:10px;
       margin-top:15px;
       background:cyan;
-      font-size:18px;
+      font-size:17px;
       cursor:pointer;
       font-weight:bold;
+      transition:0.3s;
     }
 
-    #answer{
-      margin-top:20px;
+    button:hover{
+      background:white;
+      transform:scale(1.03);
+    }
+
+    .answer{
+      margin-top:15px;
       background:#0f172a;
       padding:15px;
       border-radius:10px;
-      min-height:100px;
-      text-align:left;
+      min-height:80px;
+    }
+
+    footer{
+      text-align:center;
+      padding:30px;
+      color:#94a3b8;
     }
 
   </style>
@@ -66,121 +114,204 @@
 
 <body>
 
-  <div class="box">
+  <header>
 
-    <h1>AI Hub 🤖</h1>
+    <h1>AI Hub 🚀</h1>
 
-    <input
-      type="text"
-      id="question"
-      placeholder="Ask anything..."
-    >
+    <p>
+      Explore futuristic AI assistants for every category.
+    </p>
 
-    <button onclick="askAI()">
-      Ask AI
-    </button>
+  </header>
 
-    <div id="answer">
-      AI response appears here...
+  <div class="container">
+
+    <!-- SPORTS AI -->
+
+    <div class="card">
+
+      <h2>🏏 Sports AI</h2>
+
+      <input
+      id="sportsInput"
+      placeholder="Ask about cricket or football">
+
+      <button onclick="sportsAI()">
+        Ask Sports AI
+      </button>
+
+      <div class="answer"
+      id="sportsAnswer">
+      </div>
+
+    </div>
+
+    <!-- WEATHER AI -->
+
+    <div class="card">
+
+      <h2>🌤 Weather AI</h2>
+
+      <input
+      id="weatherInput"
+      placeholder="Ask about weather">
+
+      <button onclick="weatherAI()">
+        Ask Weather AI
+      </button>
+
+      <div class="answer"
+      id="weatherAnswer">
+      </div>
+
+    </div>
+
+    <!-- CODING AI -->
+
+    <div class="card">
+
+      <h2>💻 Coding AI</h2>
+
+      <input
+      id="codingInput"
+      placeholder="Ask coding questions">
+
+      <button onclick="codingAI()">
+        Ask Coding AI
+      </button>
+
+      <div class="answer"
+      id="codingAnswer">
+      </div>
+
+    </div>
+
+    <!-- GAMING AI -->
+
+    <div class="card">
+
+      <h2>🎮 Gaming AI</h2>
+
+      <input
+      id="gamingInput"
+      placeholder="Ask about games">
+
+      <button onclick="gamingAI()">
+        Ask Gaming AI
+      </button>
+
+      <div class="answer"
+      id="gamingAnswer">
+      </div>
+
+    </div>
+
+    <!-- MOVIE AI -->
+
+    <div class="card">
+
+      <h2>🎬 Movie AI</h2>
+
+      <input
+      id="movieInput"
+      placeholder="Ask movie questions">
+
+      <button onclick="movieAI()">
+        Ask Movie AI
+      </button>
+
+      <div class="answer"
+      id="movieAnswer">
+      </div>
+
+    </div>
+
+    <!-- MUSIC AI -->
+
+    <div class="card">
+
+      <h2>🎵 Music AI</h2>
+
+      <input
+      id="musicInput"
+      placeholder="Ask about music">
+
+      <button onclick="musicAI()">
+        Ask Music AI
+      </button>
+
+      <div class="answer"
+      id="musicAnswer">
+      </div>
+
     </div>
 
   </div>
 
+  <footer>
+
+    © 2026 AI Hub | Built with HTML, CSS & JavaScript
+
+  </footer>
+
   <script>
 
-    function askAI(){
+    function sportsAI(){
 
-      let question =
-      document.getElementById("question").value.toLowerCase();
+      let q =
+      document.getElementById("sportsInput")
+      .value.toLowerCase();
 
-      let answer = "";
+      let ans =
+      "🏏 Sports AI: India and Australia are cricket giants.";
 
-      if(
-        question.includes("hello") ||
-        question.includes("hi")
-      ){
-
-        answer =
-        "👋 Hello! Welcome to AI Hub.";
-
+      if(q.includes("football")){
+        ans =
+        "⚽ Football AI: Messi is considered one of the greatest players.";
       }
 
-      else if(
-        question.includes("cricket")
-      ){
+      document.getElementById("sportsAnswer")
+      .innerHTML = ans;
 
-        answer =
-        "🏏 Cricket AI: India and Australia are top cricket teams.";
+    }
 
-      }
+    function weatherAI(){
 
-      else if(
-        question.includes("football") ||
-        question.includes("soccer")
-      ){
+      document.getElementById("weatherAnswer")
+      .innerHTML =
+      "🌤 Weather AI: Today's weather looks sunny and pleasant.";
 
-        answer =
-        "⚽ Football AI: Messi and Ronaldo are football legends.";
+    }
 
-      }
+    function codingAI(){
 
-      else if(
-        question.includes("weather")
-      ){
+      document.getElementById("codingAnswer")
+      .innerHTML =
+      "💻 Coding AI: Learn HTML, CSS and JavaScript step by step.";
 
-        answer =
-        "🌤 Weather AI: Today's weather looks sunny.";
+    }
 
-      }
+    function gamingAI(){
 
-      else if(
-        question.includes("coding") ||
-        question.includes("html") ||
-        question.includes("javascript")
-      ){
+      document.getElementById("gamingAnswer")
+      .innerHTML =
+      "🎮 Gaming AI: Minecraft and GTA are popular games.";
 
-        answer =
-        "💻 Coding AI: HTML builds websites, CSS designs them, JavaScript adds logic.";
+    }
 
-      }
+    function movieAI(){
 
-      else if(
-        question.includes("game") ||
-        question.includes("gaming")
-      ){
+      document.getElementById("movieAnswer")
+      .innerHTML =
+      "🎬 Movie AI: Interstellar is a highly rated sci-fi movie.";
 
-        answer =
-        "🎮 Gaming AI: Minecraft and GTA are very popular games.";
+    }
 
-      }
+    function musicAI(){
 
-      else if(
-        question.includes("movie")
-      ){
-
-        answer =
-        "🎬 Movie AI: Interstellar is a great sci-fi movie.";
-
-      }
-
-      else if(
-        question.includes("music")
-      ){
-
-        answer =
-        "🎵 Music AI: Music makes websites feel more interactive.";
-
-      }
-
-      else{
-
-        answer =
-        "🤖 AI Hub: I am still learning new things.";
-
-      }
-
-      document.getElementById("answer").innerHTML =
-      answer;
+      document.getElementById("musicAnswer")
+      .innerHTML =
+      "🎵 Music AI: Music improves website experience.";
 
     }
 
