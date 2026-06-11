@@ -1,153 +1,284 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Kingdom Defender</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Kingdom Defender</title>
+    <style>
+        :root {
+            --bg-color: #2c3e50;
+            --panel-color: #34495e;
+            --accent-color: #e67e22;
+            --text-color: #ecf0f1;
+            --gold-color: #f1c40f;
+        }
 
-<style>
-body{
-    font-family:Arial,sans-serif;
-    background:#87ceeb;
-    text-align:center;
-    margin:0;
-}
-h1{
-    background:#333;
-    color:white;
-    margin:0;
-    padding:15px;
-}
-#game{
-    padding:20px;
-}
-.panel{
-    background:white;
-    margin:10px auto;
-    padding:15px;
-    border-radius:10px;
-    width:300px;
-}
-button{
-    padding:10px;
-    margin:5px;
-    font-size:16px;
-}
-#log{
-    height:200px;
-    overflow-y:auto;
-    background:#eee;
-    padding:10px;
-    text-align:left;
-}
-</style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            overflow: hidden;
+            touch-action: none;
+            user-select: none;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+        }
+
+        /* Top HUD */
+        #hud {
+            height: 60px;
+            background: rgba(0,0,0,0.6);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 15px;
+            box-sizing: border-box;
+            border-bottom: 2px solid var(--accent-color);
+            z-index: 10;
+        }
+
+        .stat-box {
+            text-align: center;
+        }
+
+        .stat-label { font-size: 10px; color: #bdc3c7; }
+        .stat-value { font-size: 18px; font-weight: bold; }
+        #gold-val { color: var(--gold-color); }
+        #wave-val { color: #e74c3c; }
+
+        /* Game Area */
+        #game-container {
+            flex-grow: 1;
+            position: relative;
+            background-color: #5dade2; /* Sky */
+            overflow: hidden;
+        }
+
+        canvas {
+            display: block;
+            width: 100%;
+            height: 100%;
+        }
+
+        /* Bottom Controls */
+        #controls {
+            height: 140px;
+            background: var(--panel-color);
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            grid-template-rows: 1fr 1fr;
+            gap: 5px;
+            padding: 5px;
+            box-sizing: border-box;
+            border-top: 2px solid var(--accent-color);
+        }
+
+        button {
+            background: #7f8c8d;
+            border: none;
+            border-radius: 5px;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.1s;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            font-size: 12px;
+        }
+
+        button:active { transform: scale(0.95); }
+        button:disabled { opacity: 0.5; cursor: not-allowed; }
+        
+        .btn-train { background: #27ae60; }
+        .btn-hero { background: #8e44ad; grid-column: 3; grid-row: 1; }
+        .btn-upgrade { background: #d35400; grid-column: 1/4; grid-row: 2; }
+        
+        .cost { font-size: 10px; color: var(--gold-color); }
+
+        /* Modals */
+        .modal {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.85);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 100;
+            text-align: center;
+        }
+
+        .hidden { display: none !important; }
+
+        h1 { font-size: 32px; color: var(--accent-color); margin-bottom: 10px; text-shadow: 2px 2px 0 #000; }
+        p { max-width: 80%; margin: 10px auto; line-height: 1.5; }
+        
+        .big-btn {
+            padding: 15px 30px;
+            font-size: 20px;
+            background: var(--accent-color);
+            margin-top: 20px;
+            border: 2px solid white;
+        }
+
+        /* Upgrade Menu Overlay */
+        #upgrade-menu {
+            position: absolute;
+            bottom: 145px; /* Above controls */
+            left: 5px;
+            right: 5px;
+            background: rgba(44, 62, 80, 0.95);
+            padding: 10px;
+            border-radius: 8px;
+            display: none;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 10px;
+            z-index: 20;
+        }
+        
+        .upgrade-btn {
+            background: #c0392b;
+            font-size: 11px;
+            height: 80px;
+        }
+
+    </style>
 </head>
-
 <body>
 
-<h1>🏰 Kingdom Defender</h1>
+    <!-- HUD -->
+    <div id="hud">
+        <div class="stat-box">
+            <div class="stat-label">GOLD</div>
+            <div class="stat-value" id="gold-val">0</div>
+        </div>
+        <div class="stat-box">
+            <div class="stat-label">LIVES</div>
+            <div class="stat-value" id="lives-val">20</div>
+        </div>
+        <div class="stat-box">
+            <div class="stat-label">WAVE</div>
+            <div class="stat-value" id="wave-val">1</div>
+        </div>
+    </div>
 
-<div id="game">
+    <!-- Game Canvas -->
+    <div id="game-container">
+        <canvas id="gameCanvas"></canvas>
+    </div>
 
-<div class="panel">
-<h3>Resources</h3>
-Gold: <span id="gold">100</span><br>
-Soldiers: <span id="soldiers">0</span><br>
-Castle HP: <span id="castle">100</span>
-</div>
+    <!-- Upgrade Popup -->
+    <div id="upgrade-menu">
+        <button class="upgrade-btn" onclick="game.upgrade('wall')">
+            Wall HP<br><span class="cost" id="upg-wall-cost">100g</span>
+        </button>
+        <button class="upgrade-btn" onclick="game.upgrade('dmg')">
+            Damage<br><span class="cost" id="upg-dmg-cost">100g</span>
+        </button>
+        <button class="upgrade-btn" onclick="game.upgrade('gold')">
+            Gold Rate<br><span class="cost" id="upg-gold-cost">100g</span>
+        </button>
+    </div>
 
-<div class="panel">
-<button onclick="trainSoldier()">⚔️ Train Soldier (20 Gold)</button>
-<button onclick="upgradeCastle()">🏰 Upgrade Castle (100 Gold)</button>
-</div>
+    <!-- Controls -->
+    <div id="controls">
+        <!-- Row 1 -->
+        <button class="btn-train" onclick="game.spawnUnit('swordsman')">
+            ⚔️ Swordsman
+            <span class="cost" id="cost-sword">50g</span>
+        </button>
+        <button class="btn-train" onclick="game.spawnUnit('archer')">
+            🏹 Archer
+            <span class="cost" id="cost-archer">120g</span>
+        </button>
+        <button class="btn-hero" onclick="game.useHero()">
+            👑 Hero Power
+            <span class="cost" id="cost-hero">Ready</span>
+        </button>
 
-<div class="panel">
-<h3>Wave <span id="wave">1</span></h3>
-Enemy Strength: <span id="enemy">5</span>
-</div>
+        <!-- Row 2 -->
+        <button class="btn-upgrade" onclick="game.toggleUpgrades()">
+            ⬆️ Upgrades
+        </button>
+    </div>
 
-<div class="panel">
-<h3>Battle Log</h3>
-<div id="log"></div>
-</div>
+    <!-- Start Screen -->
+    <div id="start-screen" class="modal">
+        <h1>Kingdom Defender</h1>
+        <p>Defend your castle from the Viking horde!</p>
+        <p>Train troops. Upgrade your castle. Survive.</p>
+        <button class="big-btn" onclick="startGame()">Play Game</button>
+    </div>
 
-</div>
+    <!-- Game Over Screen -->
+    <div id="game-over-screen" class="modal hidden">
+        <h1 style="color: #c0392b">Defeat!</h1>
+        <p>Your castle has fallen.</p>
+        <p>Waves Survived: <span id="final-wave">0</span></p>
+        <button class="big-btn" onclick="location.reload()">Try Again</button>
+    </div>
 
-<script>
+    <script>
+        /* --- Audio System (Synthesizer) --- */
+        const AudioSys = {
+            ctx: null,
+            init: function() {
+                window.AudioContext = window.AudioContext || window.webkitAudioContext;
+                this.ctx = new AudioContext();
+            },
+            playTone: function(freq, type, duration) {
+                if (!this.ctx) return;
+                const osc = this.ctx.createOscillator();
+                const gain = this.ctx.createGain();
+                osc.type = type;
+                osc.frequency.setValueAtTime(freq, this.ctx.currentTime);
+                gain.gain.setValueAtTime(0.1, this.ctx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + duration);
+                osc.connect(gain);
+                gain.connect(this.ctx.destination);
+                osc.start();
+                osc.stop(this.ctx.currentTime + duration);
+            },
+            sfx: {
+                coin: () => AudioSys.playTone(800, 'sine', 0.1),
+                shoot: () => AudioSys.playTone(200, 'square', 0.1),
+                hit: () => AudioSys.playTone(100, 'sawtooth', 0.1),
+                spawn: () => AudioSys.playTone(400, 'triangle', 0.2),
+                hero: () => AudioSys.playTone(50, 'sawtooth', 1.0),
+                upgrade: () => AudioSys.playTone(600, 'sine', 0.3)
+            }
+        };
 
-let gold=100;
-let soldiers=0;
-let castleHP=100;
-let wave=1;
-let enemyStrength=5;
-
-function updateUI(){
-document.getElementById("gold").innerText=gold;
-document.getElementById("soldiers").innerText=soldiers;
-document.getElementById("castle").innerText=castleHP;
-document.getElementById("wave").innerText=wave;
-document.getElementById("enemy").innerText=enemyStrength;
-}
-
-function log(text){
-document.getElementById("log").innerHTML =
-text + "<br>" +
-document.getElementById("log").innerHTML;
-}
-
-function trainSoldier(){
-if(gold>=20){
-gold-=20;
-soldiers++;
-log("⚔️ Soldier trained");
-updateUI();
-}
-}
-
-function upgradeCastle(){
-if(gold>=100){
-gold-=100;
-castleHP+=50;
-log("🏰 Castle upgraded");
-updateUI();
-}
-}
-
-setInterval(()=>{
-gold+=5;
-updateUI();
-},1000);
-
-function battleWave(){
-
-let power=soldiers*3;
-
-if(power>=enemyStrength){
-gold+=50+wave*10;
-log("✅ Wave "+wave+" defeated");
-wave++;
-enemyStrength+=3;
-}
-else{
-let damage=enemyStrength-power;
-castleHP-=damage;
-log("❌ Castle took "+damage+" damage");
-
-if(castleHP<=0){
-alert("Game Over!");
-location.reload();
-}
-}
-
-updateUI();
-
-}
-
-setInterval(battleWave,5000);
-
-updateUI();
-
-</script>
-
-</body>
-</html>
+        /* --- Game Logic --- */
+        const game = {
+            canvas: document.getElementById('gameCanvas'),
+            ctx: document.getElementById('gameCanvas').getContext('2d'),
+            lastTime: 0,
+            width: 0,
+            height: 0,
+            
+            // State
+            gold: 100,
+            lives: 20,
+            wave: 1,
+            waveTimer: 0,
+            isGameOver: false,
+            
+            // Stats / Upgrades
+            stats: {
+                wallHp: 100,
+                maxWallHp: 100,
+                damageMult: 1,
+                goldRate: 1
+            },
+            costs: {
+                sword: 50,
+                archer: 120,
+                knight: 250, // Not in UI for simplicity but exists
+                hero: 0,
+                upgWall:
