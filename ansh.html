@@ -1,284 +1,334 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Kingdom Defender</title>
-    <style>
-        :root {
-            --bg-color: #2c3e50;
-            --panel-color: #34495e;
-            --accent-color: #e67e22;
-            --text-color: #ecf0f1;
-            --gold-color: #f1c40f;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>XYZ Dentist</title>
 
-        body {
-            margin: 0;
-            padding: 0;
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            overflow: hidden;
-            touch-action: none;
-            user-select: none;
-            display: flex;
-            flex-direction: column;
-            height: 100vh;
-        }
+<style>
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial, sans-serif;
+scroll-behavior:smooth;
+}
 
-        /* Top HUD */
-        #hud {
-            height: 60px;
-            background: rgba(0,0,0,0.6);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 0 15px;
-            box-sizing: border-box;
-            border-bottom: 2px solid var(--accent-color);
-            z-index: 10;
-        }
+body{
+background:#f8fbff;
+color:#333;
+}
 
-        .stat-box {
-            text-align: center;
-        }
+nav{
+position:fixed;
+top:0;
+width:100%;
+background:white;
+padding:15px 50px;
+display:flex;
+justify-content:space-between;
+align-items:center;
+box-shadow:0 2px 10px rgba(0,0,0,0.1);
+z-index:1000;
+}
 
-        .stat-label { font-size: 10px; color: #bdc3c7; }
-        .stat-value { font-size: 18px; font-weight: bold; }
-        #gold-val { color: var(--gold-color); }
-        #wave-val { color: #e74c3c; }
+nav ul{
+display:flex;
+list-style:none;
+gap:30px;
+}
 
-        /* Game Area */
-        #game-container {
-            flex-grow: 1;
-            position: relative;
-            background-color: #5dade2; /* Sky */
-            overflow: hidden;
-        }
+nav a{
+text-decoration:none;
+color:#1e3a8a;
+font-weight:bold;
+}
 
-        canvas {
-            display: block;
-            width: 100%;
-            height: 100%;
-        }
+.logo{
+font-size:24px;
+font-weight:bold;
+color:#2563eb;
+}
 
-        /* Bottom Controls */
-        #controls {
-            height: 140px;
-            background: var(--panel-color);
-            display: grid;
-            grid-template-columns: 1fr 1fr 1fr;
-            grid-template-rows: 1fr 1fr;
-            gap: 5px;
-            padding: 5px;
-            box-sizing: border-box;
-            border-top: 2px solid var(--accent-color);
-        }
+section{
+padding:100px 10%;
+}
 
-        button {
-            background: #7f8c8d;
-            border: none;
-            border-radius: 5px;
-            color: white;
-            font-weight: bold;
-            cursor: pointer;
-            transition: background 0.1s;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            font-size: 12px;
-        }
+.hero{
+min-height:100vh;
+display:flex;
+align-items:center;
+justify-content:space-between;
+gap:50px;
+}
 
-        button:active { transform: scale(0.95); }
-        button:disabled { opacity: 0.5; cursor: not-allowed; }
-        
-        .btn-train { background: #27ae60; }
-        .btn-hero { background: #8e44ad; grid-column: 3; grid-row: 1; }
-        .btn-upgrade { background: #d35400; grid-column: 1/4; grid-row: 2; }
-        
-        .cost { font-size: 10px; color: var(--gold-color); }
+.hero-text h1{
+font-size:4rem;
+color:#1e3a8a;
+}
 
-        /* Modals */
-        .modal {
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.85);
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            z-index: 100;
-            text-align: center;
-        }
+.hero-text span{
+color:#2563eb;
+}
 
-        .hidden { display: none !important; }
+.hero-text p{
+margin:20px 0;
+font-size:1.2rem;
+}
 
-        h1 { font-size: 32px; color: var(--accent-color); margin-bottom: 10px; text-shadow: 2px 2px 0 #000; }
-        p { max-width: 80%; margin: 10px auto; line-height: 1.5; }
-        
-        .big-btn {
-            padding: 15px 30px;
-            font-size: 20px;
-            background: var(--accent-color);
-            margin-top: 20px;
-            border: 2px solid white;
-        }
+.hero img{
+width:500px;
+border-radius:20px;
+}
 
-        /* Upgrade Menu Overlay */
-        #upgrade-menu {
-            position: absolute;
-            bottom: 145px; /* Above controls */
-            left: 5px;
-            right: 5px;
-            background: rgba(44, 62, 80, 0.95);
-            padding: 10px;
-            border-radius: 8px;
-            display: none;
-            grid-template-columns: 1fr 1fr 1fr;
-            gap: 10px;
-            z-index: 20;
-        }
-        
-        .upgrade-btn {
-            background: #c0392b;
-            font-size: 11px;
-            height: 80px;
-        }
+.btn{
+display:inline-block;
+padding:15px 30px;
+background:#2563eb;
+color:white;
+border-radius:10px;
+text-decoration:none;
+}
 
-    </style>
+.about{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:50px;
+align-items:center;
+}
+
+.about img{
+width:100%;
+border-radius:20px;
+}
+
+.services h2,
+.testimonials h2,
+.gallery h2,
+.contact h2{
+text-align:center;
+margin-bottom:50px;
+font-size:3rem;
+color:#1e3a8a;
+}
+
+.cards{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+gap:25px;
+}
+
+.card{
+background:white;
+padding:30px;
+border-radius:15px;
+box-shadow:0 5px 15px rgba(0,0,0,.08);
+text-align:center;
+}
+
+.gallery-grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
+gap:20px;
+}
+
+.gallery-grid img{
+width:100%;
+border-radius:15px;
+}
+
+.testimonial{
+background:white;
+padding:25px;
+border-radius:15px;
+box-shadow:0 5px 15px rgba(0,0,0,.08);
+}
+
+.contact{
+background:#eef5ff;
+border-radius:20px;
+}
+
+form{
+display:grid;
+gap:20px;
+max-width:700px;
+margin:auto;
+}
+
+input,textarea{
+padding:15px;
+border:1px solid #ddd;
+border-radius:10px;
+}
+
+button{
+padding:15px;
+background:#2563eb;
+color:white;
+border:none;
+border-radius:10px;
+cursor:pointer;
+font-size:18px;
+}
+
+footer{
+background:#1e3a8a;
+color:white;
+text-align:center;
+padding:30px;
+}
+
+@media(max-width:900px){
+.hero,
+.about{
+grid-template-columns:1fr;
+flex-direction:column;
+text-align:center;
+}
+
+.hero img{
+width:100%;
+}
+}
+</style>
 </head>
+
 <body>
 
-    <!-- HUD -->
-    <div id="hud">
-        <div class="stat-box">
-            <div class="stat-label">GOLD</div>
-            <div class="stat-value" id="gold-val">0</div>
-        </div>
-        <div class="stat-box">
-            <div class="stat-label">LIVES</div>
-            <div class="stat-value" id="lives-val">20</div>
-        </div>
-        <div class="stat-box">
-            <div class="stat-label">WAVE</div>
-            <div class="stat-value" id="wave-val">1</div>
-        </div>
-    </div>
+<nav>
+<div class="logo">🦷 XYZ Dentist</div>
+<ul>
+<li><a href="#home">Home</a></li>
+<li><a href="#about">About</a></li>
+<li><a href="#services">Services</a></li>
+<li><a href="#gallery">Gallery</a></li>
+<li><a href="#testimonials">Reviews</a></li>
+<li><a href="#contact">Book</a></li>
+</ul>
+</nav>
 
-    <!-- Game Canvas -->
-    <div id="game-container">
-        <canvas id="gameCanvas"></canvas>
-    </div>
+<section class="hero" id="home">
+<div class="hero-text">
+<h1>Your Smile,<br><span>Our Passion</span></h1>
+<p>Premium dental care for your family.</p>
+<a href="#contact" class="btn">Book Appointment</a>
+</div>
 
-    <!-- Upgrade Popup -->
-    <div id="upgrade-menu">
-        <button class="upgrade-btn" onclick="game.upgrade('wall')">
-            Wall HP<br><span class="cost" id="upg-wall-cost">100g</span>
-        </button>
-        <button class="upgrade-btn" onclick="game.upgrade('dmg')">
-            Damage<br><span class="cost" id="upg-dmg-cost">100g</span>
-        </button>
-        <button class="upgrade-btn" onclick="game.upgrade('gold')">
-            Gold Rate<br><span class="cost" id="upg-gold-cost">100g</span>
-        </button>
-    </div>
+<img src="https://images.unsplash.com/photo-1588776814546-1ffcf47267a5?auto=format&fit=crop&w=900&q=80">
+</section>
 
-    <!-- Controls -->
-    <div id="controls">
-        <!-- Row 1 -->
-        <button class="btn-train" onclick="game.spawnUnit('swordsman')">
-            ⚔️ Swordsman
-            <span class="cost" id="cost-sword">50g</span>
-        </button>
-        <button class="btn-train" onclick="game.spawnUnit('archer')">
-            🏹 Archer
-            <span class="cost" id="cost-archer">120g</span>
-        </button>
-        <button class="btn-hero" onclick="game.useHero()">
-            👑 Hero Power
-            <span class="cost" id="cost-hero">Ready</span>
-        </button>
+<section class="about" id="about">
+<img src="https://images.unsplash.com/photo-1629909613654-28e377c37b09?auto=format&fit=crop&w=900&q=80">
 
-        <!-- Row 2 -->
-        <button class="btn-upgrade" onclick="game.toggleUpgrades()">
-            ⬆️ Upgrades
-        </button>
-    </div>
+<div>
+<h2>About Us</h2>
+<br>
+<p>
+At XYZ Dentist, we provide advanced dental care with modern technology and experienced specialists.
+</p>
+</div>
+</section>
 
-    <!-- Start Screen -->
-    <div id="start-screen" class="modal">
-        <h1>Kingdom Defender</h1>
-        <p>Defend your castle from the Viking horde!</p>
-        <p>Train troops. Upgrade your castle. Survive.</p>
-        <button class="big-btn" onclick="startGame()">Play Game</button>
-    </div>
+<section class="services" id="services">
+<h2>Our Services</h2>
 
-    <!-- Game Over Screen -->
-    <div id="game-over-screen" class="modal hidden">
-        <h1 style="color: #c0392b">Defeat!</h1>
-        <p>Your castle has fallen.</p>
-        <p>Waves Survived: <span id="final-wave">0</span></p>
-        <button class="big-btn" onclick="location.reload()">Try Again</button>
-    </div>
+<div class="cards">
 
-    <script>
-        /* --- Audio System (Synthesizer) --- */
-        const AudioSys = {
-            ctx: null,
-            init: function() {
-                window.AudioContext = window.AudioContext || window.webkitAudioContext;
-                this.ctx = new AudioContext();
-            },
-            playTone: function(freq, type, duration) {
-                if (!this.ctx) return;
-                const osc = this.ctx.createOscillator();
-                const gain = this.ctx.createGain();
-                osc.type = type;
-                osc.frequency.setValueAtTime(freq, this.ctx.currentTime);
-                gain.gain.setValueAtTime(0.1, this.ctx.currentTime);
-                gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + duration);
-                osc.connect(gain);
-                gain.connect(this.ctx.destination);
-                osc.start();
-                osc.stop(this.ctx.currentTime + duration);
-            },
-            sfx: {
-                coin: () => AudioSys.playTone(800, 'sine', 0.1),
-                shoot: () => AudioSys.playTone(200, 'square', 0.1),
-                hit: () => AudioSys.playTone(100, 'sawtooth', 0.1),
-                spawn: () => AudioSys.playTone(400, 'triangle', 0.2),
-                hero: () => AudioSys.playTone(50, 'sawtooth', 1.0),
-                upgrade: () => AudioSys.playTone(600, 'sine', 0.3)
-            }
-        };
+<div class="card">
+<h3>🪥 Teeth Cleaning</h3>
+<p>Professional cleaning and polishing.</p>
+</div>
 
-        /* --- Game Logic --- */
-        const game = {
-            canvas: document.getElementById('gameCanvas'),
-            ctx: document.getElementById('gameCanvas').getContext('2d'),
-            lastTime: 0,
-            width: 0,
-            height: 0,
-            
-            // State
-            gold: 100,
-            lives: 20,
-            wave: 1,
-            waveTimer: 0,
-            isGameOver: false,
-            
-            // Stats / Upgrades
-            stats: {
-                wallHp: 100,
-                maxWallHp: 100,
-                damageMult: 1,
-                goldRate: 1
-            },
-            costs: {
-                sword: 50,
-                archer: 120,
-                knight: 250, // Not in UI for simplicity but exists
-                hero: 0,
-                upgWall:
+<div class="card">
+<h3>😁 Teeth Whitening</h3>
+<p>Brighten your smile safely.</p>
+</div>
+
+<div class="card">
+<h3>🦷 Dental Implants</h3>
+<p>Permanent replacement teeth.</p>
+</div>
+
+<div class="card">
+<h3>😬 Braces</h3>
+<p>Straighten your teeth.</p>
+</div>
+
+<div class="card">
+<h3>🔬 Root Canal</h3>
+<p>Painless root canal treatment.</p>
+</div>
+
+<div class="card">
+<h3>👨‍⚕️ Checkups</h3>
+<p>Regular dental examinations.</p>
+</div>
+
+</div>
+</section>
+
+<section class="gallery" id="gallery">
+<h2>Clinic Gallery</h2>
+
+<div class="gallery-grid">
+
+<img src="https://images.unsplash.com/photo-1606811841689-23dfddce3e95?auto=format&fit=crop&w=900&q=80">
+
+<img src="https://images.unsplash.com/photo-1588776814546-1ffcf47267a5?auto=format&fit=crop&w=900&q=80">
+
+<img src="https://images.unsplash.com/photo-1629909615184-74f495363b67?auto=format&fit=crop&w=900&q=80">
+
+</div>
+</section>
+
+<section class="testimonials" id="testimonials">
+<h2>Patient Reviews</h2>
+
+<div class="cards">
+
+<div class="testimonial">
+⭐⭐⭐⭐⭐
+<p>"Best dental clinic I've visited."</p>
+</div>
+
+<div class="testimonial">
+⭐⭐⭐⭐⭐
+<p>"Very professional and painless treatment."</p>
+</div>
+
+<div class="testimonial">
+⭐⭐⭐⭐⭐
+<p>"Friendly staff and modern clinic."</p>
+</div>
+
+</div>
+</section>
+
+<section class="contact" id="contact">
+<h2>Book Appointment</h2>
+
+<form>
+<input type="text" placeholder="Full Name">
+
+<input type="tel" placeholder="Phone Number">
+
+<input type="email" placeholder="Email">
+
+<input type="date">
+
+<textarea rows="5" placeholder="Your Message"></textarea>
+
+<button type="submit">
+Book Appointment
+</button>
+</form>
+
+</section>
+
+<footer>
+© 2026 XYZ Dentist. All Rights Reserved.
+</footer>
+
+</body>
+</html>
