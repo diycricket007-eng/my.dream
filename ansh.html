@@ -1,42 +1,205 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <!-- Premium Fonts -->
-  <!-- Glassmorphism CSS -->
-  <!-- Animations -->
-  <!-- Responsive Design -->
-</head>
+import React from 'react';
+import { 
+  Stethoscope, 
+  Calendar, 
+  Phone, 
+  MapPin, 
+  Smile, 
+  Sparkles, 
+  Shield, 
+  Activity, 
+  Star 
+} from 'lucide-react';
 
-<body>
+export default function Home() {
+  
+  // Services Data Array
+  const services = [
+    { 
+      icon: <Smile className="w-6 h-6 text-sky-600" />, 
+      title: 'General Dentistry', 
+      desc: 'Comprehensive exams, professional cleanings, and preventative care for a lifelong healthy mouth.' 
+    },
+    { 
+      icon: <Sparkles className="w-6 h-6 text-purple-600" />, 
+      title: 'Cosmetic Whitening', 
+      desc: 'Brighten your smile dramatically with our safe, high-grade professional bleaching treatments.' 
+    },
+    { 
+      icon: <Shield className="w-6 h-6 text-emerald-600" />, 
+      title: 'Orthodontics & Braces', 
+      desc: 'Straighten misaligned teeth gracefully using advanced clear aligners or modern comfortable braces.' 
+    },
+    { 
+      icon: <Activity className="w-6 h-6 text-rose-600" />, 
+      title: 'Root Canal Therapy', 
+      desc: 'Gentle, pain-free root treatments designed to save your natural teeth and restore comfort seamlessly.' 
+    }
+  ];
 
-  <!-- Sticky Glass Navbar -->
+  // Testimonials Data Array
+  const reviews = [
+    { 
+      name: 'Sarah Jenkins', 
+      role: 'Patient', 
+      text: 'The best dental experience I have ever had. The team was incredibly gentle and walked me through every step of my teeth whitening process.', 
+      stars: 5 
+    },
+    { 
+      name: 'David Miller', 
+      role: 'Patient', 
+      text: 'Extremely professional and squeaky clean clinic. Booking online was seamless and they respect appointment timings strictly. Highly recommended!', 
+      stars: 5 
+    }
+  ];
 
-  <!-- Hero Section
-       Large Image
-       Gradient Background
-       CTA Button -->
+  return (
+    <div className="min-h-screen bg-white text-slate-800 antialiased scroll-smooth">
+      
+      {/* 1. NAVIGATION BAR */}
+      <nav className="sticky top-0 z-50 bg-white/90 backdrop-blur-md border-b border-slate-100 px-6 py-4 md:px-12 flex items-center justify-between">
+        <div className="flex items-center space-x-2 text-sky-600 font-bold text-xl">
+          <Stethoscope className="w-6 h-6" />
+          <span>Dentist<span className="text-slate-900">Pro</span></span>
+        </div>
+        <div className="hidden md:flex items-center space-x-8 font-medium text-slate-600">
+          <a href="#hero" className="hover:text-sky-600 transition">Home</a>
+          <a href="#services" className="hover:text-sky-600 transition">Services</a>
+          <a href="#testimonials" className="hover:text-sky-600 transition">Reviews</a>
+        </div>
+        <a href="#contact" className="bg-sky-600 hover:bg-sky-700 text-white font-medium py-2.5 px-5 rounded-full transition shadow-sm text-sm">
+          Book Appointment
+        </a>
+      </nav>
 
-  <!-- Statistics Section -->
+      <main>
+        {/* 2. HERO SECTION */}
+        <section id="hero" className="bg-slate-50 pt-16 pb-24 px-6 md:px-12 lg:px-24 relative overflow-hidden">
+          <div className="max-w-7xl mx-auto flex flex-col lg:flex-row items-center justify-between gap-12">
+            
+            {/* Hero Left Content */}
+            <div className="lg:w-1/2 space-y-6 z-10">
+              <span className="text-sky-600 font-semibold tracking-wide uppercase text-sm bg-sky-50 px-3 py-1 rounded-full">
+                Welcome to DentistPro
+              </span>
+              <h1 className="text-4xl md:text-6xl font-extrabold text-slate-900 leading-tight">
+                We Care About Your <span className="text-sky-600">Perfect Smile</span>
+              </h1>
+              <p className="text-slate-600 text-lg max-w-md">
+                Providing world-class dental care with cutting-edge technology and a gentle touch. Your comfort and oral health are our top priorities.
+              </p>
+              <div className="flex flex-wrap gap-4">
+                <a href="#contact" className="bg-sky-600 hover:bg-sky-700 text-white font-medium py-3.5 px-7 rounded-xl transition shadow-md">
+                  Book Appointment
+                </a>
+                <a href="#services" className="border border-slate-300 hover:border-slate-400 text-slate-700 font-medium py-3.5 px-7 rounded-xl transition bg-white">
+                  Explore Services
+                </a>
+              </div>
+            </div>
 
-  <!-- About Dentist -->
+            {/* Hero Right Image Area */}
+            <div className="lg:w-1/2 flex justify-center relative">
+              <div className="absolute inset-0 bg-sky-200 rounded-full filter blur-3xl opacity-30 -z-10 translate-x-10"></div>
+              <img 
+                src="https://images.unsplash.com/photo-1629909613654-28e377c37b09?auto=format&fit=crop&w=600&q=80" 
+                alt="Modern Dental Office" 
+                className="rounded-3xl shadow-2xl max-w-full h-[450px] object-cover border-8 border-white"
+              />
+            </div>
+          </div>
 
-  <!-- Services Cards -->
+          {/* 3. QUICK INFO CARDS */}
+          <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-6 mt-16 relative z-20">
+            {/* Phone Card */}
+            <div className="bg-white p-6 rounded-2xl shadow-xl border border-slate-100 flex items-start space-x-4">
+              <div className="p-3 bg-sky-50 rounded-xl text-sky-600"><Phone className="w-6 h-6" /></div>
+              <div>
+                <h3 className="font-bold text-slate-900">Emergency Call</h3>
+                <p className="text-sky-600 font-semibold mt-1">+1 (555) 234-5678</p>
+                <p className="text-xs text-slate-400 mt-0.5">24/7 Available for urgent care</p>
+              </div>
+            </div>
+            {/* Hours Card */}
+            <div className="bg-white p-6 rounded-2xl shadow-xl border border-slate-100 flex items-start space-x-4">
+              <div className="p-3 bg-emerald-50 rounded-xl text-emerald-600"><Calendar className="w-6 h-6" /></div>
+              <div>
+                <h3 className="font-bold text-slate-900">Working Hours</h3>
+                <p className="text-slate-600 text-sm mt-1">Mon - Sat: 9:00 AM - 6:00 PM</p>
+                <p className="text-xs text-slate-400 mt-0.5">Sunday: Closed</p>
+              </div>
+            </div>
+            {/* Location Card */}
+            <div className="bg-white p-6 rounded-2xl shadow-xl border border-slate-100 flex items-start space-x-4">
+              <div className="p-3 bg-amber-50 rounded-xl text-amber-600"><MapPin className="w-6 h-6" /></div>
+              <div>
+                <h3 className="font-bold text-slate-900">Our Location</h3>
+                <p className="text-slate-600 text-sm mt-1">123 Health Ave, Medical District</p>
+                <p className="text-xs text-slate-400 mt-0.5">Free basement parking available</p>
+              </div>
+            </div>
+          </div>
+        </section>
 
-  <!-- Before / After Gallery -->
+        {/* 4. SERVICES GRID SECTION */}
+        <section id="services" className="py-24 px-6 md:px-12 lg:px-24 bg-white">
+          <div className="max-w-7xl mx-auto">
+            <div className="text-center max-w-2xl mx-auto mb-16">
+              <h2 className="text-3xl md:text-4xl font-bold text-slate-900">Our Premium Dental Services</h2>
+              <p className="text-slate-500 mt-4">We offer a wide spectrum of dental healthcare services tailored exclusively to keep your family smiling brightly.</p>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+              {services.map((srv, idx) => (
+                <div key={idx} className="p-8 rounded-2xl border border-slate-100 bg-slate-50/50 hover:bg-white hover:shadow-xl hover:border-transparent transition-all duration-300 group">
+                  <div className="p-3 bg-white rounded-xl shadow-sm inline-block group-hover:scale-110 transition-transform duration-300">
+                    {srv.icon}
+                  </div>
+                  <h3 className="font-bold text-lg text-slate-900 mt-6 mb-3">{srv.title}</h3>
+                  <p className="text-slate-500 text-sm leading-relaxed">{srv.desc}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
 
-  <!-- Testimonials Slider -->
+        {/* 5. TESTIMONIALS SECTION */}
+        <section id="testimonials" className="py-24 px-6 md:px-12 lg:px-24 bg-slate-50">
+          <div className="max-w-7xl mx-auto">
+            <div className="text-center max-w-2xl mx-auto mb-16">
+              <h2 className="text-3xl md:text-4xl font-bold text-slate-900">What Our Patients Say</h2>
+              <p className="text-slate-500 mt-4">Real stories from people who trusted us with their smiles.</p>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+              {reviews.map((rev, idx) => (
+                <div key={idx} className="bg-white p-8 rounded-2xl shadow-md border border-slate-100 flex flex-col justify-between">
+                  <div className="flex space-x-1 text-amber-400 mb-4">
+                    {[...Array(rev.stars)].map((_, i) => (
+                      <Star key={i} className="w-5 h-5 fill-current" />
+                    ))}
+                  </div>
+                  <p className="text-slate-600 italic leading-relaxed">"{rev.text}"</p>
+                  <div className="mt-6 border-t border-slate-100 pt-4">
+                    <h4 className="font-bold text-slate-900">{rev.name}</h4>
+                    <p className="text-xs text-slate-400">{rev.role}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+      </main>
 
-  <!-- FAQ Accordion -->
-
-  <!-- Contact Section -->
-
-  <!-- Google Maps -->
-
-  <!-- Appointment Form -->
-
-  <!-- WhatsApp Floating Button -->
-
-  <!-- Footer -->
-
-</body>
-</html>
+      {/* 6. FOOTER */}
+      <footer className="bg-slate-900 text-slate-400 text-center py-12 text-sm border-t border-slate-800">
+        <div className="max-w-7xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-4 border-b border-slate-800 pb-8 mb-8">
+          <div className="flex items-center space-x-2 text-white font-bold text-xl">
+            <Stethoscope className="w-6 h-6 text-sky-500" />
+            <span>Dentist<span className="text-sky-500">Pro</span></span>
+          </div>
+          <p className="text-slate-500">Making dental care comfortable and reliable.</p>
+        </div>
+        <p>&copy; {new Date().getFullYear()} DentistPro. All rights reserved. Built beautifully.</p>
+      </footer>
+    </div>
+  );
+}
